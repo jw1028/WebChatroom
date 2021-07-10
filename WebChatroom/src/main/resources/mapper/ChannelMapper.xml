@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.ChannelMapper">
+  <resultMap id="BaseResultMap" type="org.example.model.Channel">
+    <id column="channelId" jdbcType="INTEGER" property="channelId" />
+    <result column="channelName" jdbcType="VARCHAR" property="channelName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    channelId, channelName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from channel
+    where channelId = #{channelId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from channel
+    where channelId = #{channelId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.example.model.Channel">
+    insert into channel (channelId, channelName)
+    values (#{channelId,jdbcType=INTEGER}, #{channelName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.example.model.Channel">
+    insert into channel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="channelId != null">
+        channelId,
+      </if>
+      <if test="channelName != null">
+        channelName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="channelId != null">
+        #{channelId,jdbcType=INTEGER},
+      </if>
+      <if test="channelName != null">
+        #{channelName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.example.model.Channel">
+    update channel
+    <set>
+      <if test="channelName != null">
+        channelName = #{channelName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where channelId = #{channelId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.example.model.Channel">
+    update channel
+    set channelName = #{channelName,jdbcType=VARCHAR}
+    where channelId = #{channelId,jdbcType=INTEGER}
+  </update>
+  <select id="selectOne" parameterType="org.example.model.Channel" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from channel
+    <where>
+      <if test="channelName != null">
+        and channelName = #{channelName,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select channelId, channelName
+    from channel
+  </select>
+  <select id="selectByCondition" parameterType="org.example.model.Channel" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from channel
+    <where>
+      <if test="channelName != null">
+        and channelName = #{channelName,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByIds" parameterType="java.util.List">
+    delete from channel
+      where channelId in
+    <foreach close=")" collection="list" item="item" open="(" separator=",">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.MessageMapper">
+  <resultMap id="BaseResultMap" type="org.example.model.Message">
+    <id column="messageId" jdbcType="INTEGER" property="messageId" />
+    <result column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="channelId" jdbcType="INTEGER" property="channelId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="sendTime" jdbcType="TIMESTAMP" property="sendTime" />
+    <result column="nickName" property="nickName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    messageId, userId, channelId, content, sendTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    where messageId = #{messageId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from message
+    where messageId = #{messageId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.example.model.Message">
+    insert into message (messageId, userId, channelId, 
+      content, sendTime)
+    values (#{messageId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{channelId,jdbcType=INTEGER}, 
+      #{content,jdbcType=VARCHAR}, #{sendTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.example.model.Message">
+    insert into message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="messageId != null">
+        messageId,
+      </if>
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="channelId != null">
+        channelId,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="sendTime != null">
+        sendTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="messageId != null">
+        #{messageId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="channelId != null">
+        #{channelId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null">
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.example.model.Message">
+    update message
+    <set>
+      <if test="userId != null">
+        userId = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="channelId != null">
+        channelId = #{channelId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null">
+        sendTime = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where messageId = #{messageId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.example.model.Message">
+    update message
+    set userId = #{userId,jdbcType=INTEGER},
+      channelId = #{channelId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      sendTime = #{sendTime,jdbcType=TIMESTAMP}
+    where messageId = #{messageId,jdbcType=INTEGER}
+  </update>
+  <select id="selectOne" parameterType="org.example.model.Message" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    <where>
+      <if test="userId != null">
+        and userId = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="channelId != null">
+        and channelId = #{channelId,jdbcType=INTEGER}
+      </if>
+      <if test="content != null">
+        and content = #{content,jdbcType=VARCHAR}
+      </if>
+      <if test="sendTime != null">
+        and sendTime = #{sendTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select messageId, userId, channelId, content, sendTime
+    from message
+  </select>
+  <select id="selectByCondition" parameterType="org.example.model.Message" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    <where>
+      <if test="userId != null">
+        and userId = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="channelId != null">
+        and channelId = #{channelId,jdbcType=INTEGER}
+      </if>
+      <if test="content != null">
+        and content = #{content,jdbcType=VARCHAR}
+      </if>
+      <if test="sendTime != null">
+        and sendTime = #{sendTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByIds" parameterType="java.util.List">
+    delete from message
+      where messageId in
+    <foreach close=")" collection="list" item="item" open="(" separator=",">
+      #{item}
+    </foreach>
+  </delete>
+
+
+  <select id="selectByLastLogout" resultMap="BaseResultMap">
+    select
+        m.*, u.nickName
+    from message m join user u
+        on m.userId=u.userId
+    where sendTime > #{lastLogout}
+  </select>
+</mapper>

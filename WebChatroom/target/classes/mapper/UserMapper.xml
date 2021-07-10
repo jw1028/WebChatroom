@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="org.example.model.User">
+    <id column="userId" jdbcType="INTEGER" property="userId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="nickName" jdbcType="VARCHAR" property="nickName" />
+    <result column="iconPath" jdbcType="VARCHAR" property="iconPath" />
+    <result column="signature" jdbcType="VARCHAR" property="signature" />
+    <result column="lastLogout" jdbcType="TIMESTAMP" property="lastLogout" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    userId, name, password, nickName, iconPath, signature, lastLogout
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where userId = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where userId = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.example.model.User">
+    insert into user (userId, name, password, 
+      nickName, iconPath, signature, 
+      lastLogout)
+    values (#{userId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{nickName,jdbcType=VARCHAR}, #{iconPath,jdbcType=VARCHAR}, #{signature,jdbcType=VARCHAR}, 
+      #{lastLogout,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.example.model.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        userId,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="nickName != null">
+        nickName,
+      </if>
+      <if test="iconPath != null">
+        iconPath,
+      </if>
+      <if test="signature != null">
+        signature,
+      </if>
+      <if test="lastLogout != null">
+        lastLogout,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="iconPath != null">
+        #{iconPath,jdbcType=VARCHAR},
+      </if>
+      <if test="signature != null">
+        #{signature,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLogout != null">
+        #{lastLogout,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.example.model.User">
+    update user
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        nickName = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="iconPath != null">
+        iconPath = #{iconPath,jdbcType=VARCHAR},
+      </if>
+      <if test="signature != null">
+        signature = #{signature,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLogout != null">
+        lastLogout = #{lastLogout,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where userId = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.example.model.User">
+    update user
+    set name = #{name,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      nickName = #{nickName,jdbcType=VARCHAR},
+      iconPath = #{iconPath,jdbcType=VARCHAR},
+      signature = #{signature,jdbcType=VARCHAR},
+      lastLogout = #{lastLogout,jdbcType=TIMESTAMP}
+    where userId = #{userId,jdbcType=INTEGER}
+  </update>
+  <select id="selectOne" parameterType="org.example.model.User" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    <where>
+      <if test="name != null">
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="password != null">
+        and password = #{password,jdbcType=VARCHAR}
+      </if>
+      <if test="nickName != null">
+        and nickName = #{nickName,jdbcType=VARCHAR}
+      </if>
+      <if test="iconPath != null">
+        and iconPath = #{iconPath,jdbcType=VARCHAR}
+      </if>
+      <if test="signature != null">
+        and signature = #{signature,jdbcType=VARCHAR}
+      </if>
+      <if test="lastLogout != null">
+        and lastLogout = #{lastLogout,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select userId, name, password, nickName, iconPath, signature, lastLogout
+    from user
+  </select>
+  <select id="selectByCondition" parameterType="org.example.model.User" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    <where>
+      <if test="name != null">
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="password != null">
+        and password = #{password,jdbcType=VARCHAR}
+      </if>
+      <if test="nickName != null">
+        and nickName = #{nickName,jdbcType=VARCHAR}
+      </if>
+      <if test="iconPath != null">
+        and iconPath = #{iconPath,jdbcType=VARCHAR}
+      </if>
+      <if test="signature != null">
+        and signature = #{signature,jdbcType=VARCHAR}
+      </if>
+      <if test="lastLogout != null">
+        and lastLogout = #{lastLogout,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByIds" parameterType="java.util.List">
+    delete from user
+      where userId in
+    <foreach close=")" collection="list" item="item" open="(" separator=",">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>
